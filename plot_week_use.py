@@ -13,5 +13,6 @@ big_data['hour'] = big_data.Inicio_del_viaje.map(lambda date: date.hour)
 
 hist = big_data.groupby(['hour', 'dia_semana']).agg(['mean', 'count'])['Viaje_Id']['count']
 hist.unstack().plot()
+plt.show()
 
 print (big_data)
