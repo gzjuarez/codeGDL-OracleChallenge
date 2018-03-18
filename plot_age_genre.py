@@ -8,7 +8,7 @@ import math
 import read_data
 
 
-data = read_data.read_sample_data()
+data = read_data.read_all_data()
 
 data['Ano_de_nacimiento'] = data['Ano_de_nacimiento'].astype(str)
 data_filtered_birth = data.filter(regex='^\d{4}$', axis=0)
@@ -40,7 +40,7 @@ print(
 for i in range(len(list_nacimiento)):
     tup = ((list_genre[i] - genre_av) / genre_sdev,
            (list_estacion_origen[i] - origen_av) / origen_sdev,
-           (list_nacimiento[i] - nacimiento_av) / origen_sdev
+           (list_nacimiento[i] - nacimiento_av) / nacimiento_sdev
     )
     list_k.append(tup)
 
@@ -56,7 +56,7 @@ kmeans = KMeans(n_clusters=4, random_state=1).fit(X)
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 for i, coords in enumerate(kmeans.cluster_centers_):
-    ax.scatter(coords[0], coords[1], coords[2], c=colors[i%10], marker='X')
+    ax.scatter(coords[0] * genre_sdev + genre_av , coords[1] * origen_sdev + origen_av, coords[2] * nacimiento_sdev + nacimiento_av, marker='X')
 
 for x, y, z, label in zip(list_genre, list_estacion_origen, list_nacimiento, kmeans.labels_):
     ax.scatter(x, y, z, c=colors[label], marker=markers[label])
