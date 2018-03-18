@@ -10,23 +10,15 @@ def calculate_intervals(max, min, size):
     k = 1 + np.log2(size)
     return rang / k
 
-data = read_data.read_sample_data()
+data = read_data.read_all_data()
 
-birth_year = data['Ano_de_nacimiento']
-birth_year = birth_year.filter(regex='^\d{4}$')
-birth_year = birth_year.astype('int64')
-
-data['Ano_de_nacimiento'] = birth_year
-
-intervals = calculate_intervals(birth_year.max(), birth_year.min(), birth_year.size)
 #print(pd.cut(birth_year, intervals))
+#data_filtered_birth = data[ len(data['Ano_de_nacimiento'].str) == 4]
 
-#grouped = data.groupby(pd.cut(birth_year, np.arange(birth_year.min(), birth_year.max(), 4)))
-grouped = data.groupby(['Ano_de_nacimiento', 'Genero']).agg('count')['Viaje_Id']
+data_filtered_birth = data.set_index('Ano_de_nacimiento').filter(regex='^\d{4}$', axis=0)
+grouped = data_filtered_birth.groupby(['Ano_de_nacimiento', 'Genero']).agg('count')['Viaje_Id']
 
 print(grouped)
-#grouped.plot()
-#plt.show()
 
 #grouped = data.groupby(pd.cut(data['Ano_de_nacimiento'], 10))
 #print(pd.cut(birth_year.astype('int64'), 50))

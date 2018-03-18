@@ -18,7 +18,7 @@ def read_sample_data():
     
     df = pd.read_csv("Data/datos_abiertos_2017_01.csv",  low_memory = False)
     df.Genero = df.Genero.map(lambda g: 1 if g == 'H' else -1)
-    print(df.Genero.sum())
+    #print(df.Genero.sum())
     return df.dropna(how='any')
 
 def nomenclatura():
