@@ -7,15 +7,9 @@ import math
 
 import read_data
 
-def calculate_intervals(max, min, size):
-    rang = max - min
-    k = 1 + np.log2(size)
-    return rang / k
 
 data = read_data.read_sample_data()
 
-#print(pd.cut(birth_year, intervals))
-#data_filtered_birth = data[ len(data['Ano_de_nacimiento'].str) == 4]
 data['Ano_de_nacimiento'] = data['Ano_de_nacimiento'].astype(str)
 data_filtered_birth = data.filter(regex='^\d{4}$', axis=0)
 
@@ -74,21 +68,3 @@ ax.set_ylabel('Estacion')
 ax.set_zlabel('Nacimiento')
 
 plt.show()
-
-#data_filtered_birth['Ano_de_nacimiento'] = data_filtered_birth['Ano_de_nacimiento'].astype("float64")
-# grouped = data_filtered_birth.groupby(['Origen_Id', 'Ano_de_nacimiento', 'Genero']).agg('count')['Viaje_Id']
-
-#print(grouped)
-#input()
-#print(grouped.unstack())
-
-#grouped = data.groupby(pd.cut(data['Ano_de_nacimiento'], 10))
-#print(pd.cut(birth_year.astype('int64'), 50))
-#print(birth_year)
-
-#for name, group in grouped:
-#    print (name)
-#    print (group)
-
-#for index, row in data.iterrows():
-#    print(row['Ano_de_nacimiento'])
