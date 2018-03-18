@@ -35,7 +35,7 @@ def plot_matrix():
                 col = (1.0 - (val / max_val), 1.0 - (val / max_val), 1.0 - (val / max_val))
                 plt.plot([i[0], j[0]], [i[1], j[1]], color = col)
                 # print(k1, k2, val, col)
-        print(k1)
+        #print(k1)
     plt.show()
 
 plot_matrix()

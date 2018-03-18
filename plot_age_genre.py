@@ -47,13 +47,11 @@ for i in range(len(list_nacimiento)):
 colors =  np.array(['k', 'r', 'b', 'g', 'y', 'c', 'm', 'lime', 'hotpink', 'teal'])
 markers = np.array(['x', 'o', '^', '*', 'h', 's', 'D', 'P', '8', '4'])
 X = np.array(list_k)
-kmeans = KMeans(n_clusters=5, random_state=1).fit(X)
+kmeans = KMeans(n_clusters=4, random_state=1).fit(X)
 
-plt.plot(list_estacion_origen[list_genre == -1], list_nacimiento[list_genre == -1])
-plt.plot(list_estacion_origen[list_genre == 1], list_nacimiento[list_genre == 1])
-plt.show()
-
-input()
+#plt.plot(list_estacion_origen[list_genre == -1], list_nacimiento[list_genre == -1])
+#plt.plot(list_estacion_origen[list_genre == 1], list_nacimiento[list_genre == 1])
+#plt.show()
 
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
