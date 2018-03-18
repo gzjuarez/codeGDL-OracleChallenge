@@ -26,14 +26,34 @@ list_nacimiento = list(map(lambda n: math.floor((2017 - n) / 10) * 10, list_naci
 
 list_k = []
 
+genre_av = np.mean(np.array(list_genre))
+origen_av = np.mean(np.array(list_estacion_origen))
+nacimiento_av = np.mean(np.array(list_nacimiento))
+
+genre_sdev = np.std(np.array(list_genre))
+origen_sdev = np.std(np.array(list_estacion_origen))
+nacimiento_sdev = np.std(np.array(list_nacimiento))
+
+print(
+    genre_av,
+    genre_sdev,
+    origen_av,
+    origen_sdev,
+    nacimiento_av,
+    nacimiento_sdev
+)
+
 for i in range(len(list_nacimiento)):
-    tup = (list_genre[i], list_estacion_origen[i], list_nacimiento[i])
+    tup = ((list_genre[i] - genre_av) / genre_sdev,
+           (list_estacion_origen[i] - origen_av) / origen_sdev,
+           (list_nacimiento[i] - nacimiento_av) / origen_sdev
+    )
     list_k.append(tup)
 
 colors =  np.array(['k', 'r', 'b', 'g', 'y', 'c', 'm', 'lime', 'hotpink', 'teal'])
 markers = np.array(['x', 'o', '^', '*', 'h', 's', 'D', 'P', '8', '4'])
 X = np.array(list_k)
-kmeans = KMeans(n_clusters=10, random_state=1).fit(X)
+kmeans = KMeans(n_clusters=5, random_state=1).fit(X)
 
 plt.plot(list_estacion_origen[list_genre == -1], list_nacimiento[list_genre == -1])
 plt.plot(list_estacion_origen[list_genre == 1], list_nacimiento[list_genre == 1])
