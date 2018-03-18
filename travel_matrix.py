@@ -1,4 +1,5 @@
 import read_data
+import matplotlib.pyplot as plt
 
 def make_matrix(data):
     matrix = [[0 for i in range(254)] for j in range(254)]
@@ -16,4 +17,26 @@ def make_matrix(data):
 
     return matrix
 
-print(make_matrix(read_data.read_all_data()))
+def plot_matrix():
+    matrix = make_matrix(read_data.read_all_data())
+    stations = read_data.nomenclatura()
+    # stations = {
+    #     3: allstations[3],
+    #     4: allstations[4],
+    #     5: allstations[5],
+    #     6: allstations[6],
+    #     100: allstations[100],
+    # }
+    max_val = max([max(row) for row in matrix])
+    for k1, i in stations.items():
+        for k2, j in stations.items():
+            val = matrix[k1][k2]
+            if val / max_val > 0.2:
+                col = (1.0 - (val / max_val), 1.0 - (val / max_val), 1.0 - (val / max_val))
+                plt.plot([i[0], j[0]], [i[1], j[1]], color = col)
+                # print(k1, k2, val, col)
+        print(k1)
+    plt.show()
+
+plot_matrix()
+# print(make_matrix(read_data.read_all_data()))
