@@ -8,7 +8,7 @@ from datetime import datetime
 
 import read_data
 
-data = read_data.read_all_data()
+data = read_data.read_sample_data()
 
 #print(pd.cut(birth_year, intervals))
 #data_filtered_birth = data[ len(data['Ano_de_nacimiento'].str) == 4]
@@ -24,37 +24,30 @@ list_month = data['Inicio_del_viaje'].map(lambda date_str: datetime.strptime(dat
 
 list_k = [[0, 0] for i in range(254)]
 
-genre_av = np.mean(np.array(list_genre))
-origen_av = np.mean(np.array(list_estacion_origen))
-nacimiento_av = np.mean(np.array(list_nacimiento))
-
-genre_sdev = np.std(np.array(list_genre))
-origen_sdev = np.std(np.array(list_estacion_origen))
-nacimiento_sdev = np.std(np.array(list_nacimiento))
-
 for i in range(len(list_nacimiento)):
     list_k[list_estacion_origen[i]][0] += 1
     list_k[list_estacion_destino[i]][1] += 1
 
+origenes = [x[0] for x in list_k]
+destinos = [x[1] for x in list_k]
+origen_av = np.mean(np.array(origenes))
+origen_sdev = np.std(np.array(origenes))
+destino_av = np.mean(np.array(destinos))
+destino_sdev = np.std(np.array(destinos))
+
 colors =  np.array(['k', 'r', 'b', 'g', 'y', 'c', 'm', 'lime', 'hotpink', 'teal'])
 markers = np.array(['x', 'o', '^', '*', 'h', 's', 'D', 'P', '8', '4'])
-X = np.array(list_k)
+X = np.array([[(x[0] - origen_av) / origen_sdev, (x[1] - destino_av) / destino_sdev] for x in list_k])
 kmeans = KMeans(n_clusters=5, random_state=1).fit(X)
-
-plt.plot(list_estacion_origen[list_genre == -1], list_nacimiento[list_genre == -1])
-plt.plot(list_estacion_origen[list_genre == 1], list_nacimiento[list_genre == 1])
-plt.show()
-
-input()
 
 fig = plt.figure()
 ax = fig.add_subplot(111)
-# for i, coords in enumerate(kmeans.cluster_centers_):
-#     ax.scatter(coords[0], coords[1], coords[2], c=colors[i%10], marker='X')
 
 for visits, label in zip(list_k, kmeans.labels_):
-    print(visits, label)
     ax.scatter(visits[0], visits[1], c=colors[label], marker=markers[label])
+
+for i, coords in enumerate(kmeans.cluster_centers_):
+    ax.scatter((coords[0] * origen_sdev) + origen_av, (coords[1] * destino_sdev) + destino_av, c=colors[i%10], marker='X')
 
 ax.set_xlabel('Origenes')
 ax.set_ylabel('Destinos')
